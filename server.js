@@ -3,6 +3,29 @@ const path = require("path")
 const fastifyEnv = require("@fastify/env")
 const fastify = require("fastify")({logger: true})
 
+//register plugins
+fastify.register(require("@fastify/cors"))
+fastify.register(require("@fastify/env"), {
+    dotenv: true,
+    schema: {
+        type: 'object',
+        required: ["PORT", "MONGODB_URI", "JWT_TOKEN"],
+        properties: {
+            PORT: {
+                type: 'string',
+                default: 3000
+            },
+            MONGODB_URI: {
+                type: 'string'
+            },
+            JWT_TOKEN: {
+                type: 'string'
+            }
+        }
+    }
+})
+
+
 // Declare a route
 fastify.get('/', function (request, reply) {
   reply.send({ hello: 'world' })
