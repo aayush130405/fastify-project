@@ -26,6 +26,9 @@ fastify.register(require("@fastify/env"), {
     }
 })
 
+//register custom plugin
+fastify.register(require("./plugins/mongodb.js"))
+
 
 // Declare a route
 fastify.get('/', function (request, reply) {
