@@ -5,6 +5,7 @@ const fastify = require("fastify")({logger: true})
 
 //register plugins
 fastify.register(require("@fastify/cors"))
+fastify.register(require("@fastify/sensible"))
 fastify.register(require("@fastify/env"), {
     dotenv: true,
     schema: {
