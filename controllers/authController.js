@@ -70,3 +70,32 @@ exports.forgotPassword = async(request, reply) => {
         reply.send(err)
     }
 }
+
+exports.resetPassword = async(request, reply) => {
+    const resetToken = request.params.resetToken
+    const {newPassword} = request.body
+
+    const user = await User.findOne({
+        resetPasswordToken: resetToken,
+        resetPasswordExpiry: {$gt: Date.now()}
+    })
+    if(!user) {
+        return reply.badRequest("Invalid or expired password reset token")          //using sensible plugin for .badRequest() method
+    }
+
+    //hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 12)
+
+    user.password = hashedPassword
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpiry = undefined
+
+    await user.save()
+
+    reply.send({message: "Password reset successful"})
+}
+
+exports.logout = async (request, reply) => {
+    //since jwt are stateless, use something like refresh token or blacklist token afterwards
+    reply.send({message: "User logged out"})
+}
