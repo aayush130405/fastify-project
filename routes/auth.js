@@ -5,5 +5,5 @@ module.exports = async function (fastify, opts) {
     fastify.post("/login", authController.login)
     fastify.post("/forgot-password", authController.forgotPassword)
     fastify.post("/reset-password/:token", authController.resetPassword)
-    fastify.post("/logout", authController.login)
+    fastify.post("/logout", authController.logout)
 }
