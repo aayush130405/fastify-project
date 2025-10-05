@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs")
 exports.register = async(request, reply) => {
     try {
         //validate body
-        const {name, email, password, country} = request.body
+        const {name, email, password, country} = await request.body
 
         //hash pass
         const hashedPassword = await bcrypt.hash(password, 12)
