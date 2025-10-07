@@ -5,3 +5,7 @@ const {pipeline} = require("stream")
 
 const util = require("util")
 const pipelineAsync = util.promisify(pipeline)
+
+exports.createThumbnail = async (request, reply) => {
+    
+}
