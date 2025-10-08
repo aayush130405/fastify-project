@@ -7,5 +7,9 @@ const util = require("util")
 const pipelineAsync = util.promisify(pipeline)
 
 exports.createThumbnail = async (request, reply) => {
-    
+    try {
+        const parts = request.part()
+    } catch (err) {
+        reply.send(err)
+    }
 }
