@@ -8,7 +8,7 @@ const pipelineAsync = util.promisify(pipeline)
 
 exports.createThumbnail = async (request, reply) => {
     try {
-        const parts = request.part()
+        const parts = request.part()            //gets both file and field
     } catch (err) {
         reply.send(err)
     }
