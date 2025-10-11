@@ -16,7 +16,7 @@ exports.createThumbnail = async (request, reply) => {
             if(part.file) {
                 const filename = `${Date.now()}-${part.filename}`
                 const saveTo = path.join(
-                    __dirname, "..", "uploads", "thumbnails", filename
+                    __dirname, "..", "uploads", "thumbnails", filename//
                 ) 
             } else {
                 fields[part.filename] = part.value
