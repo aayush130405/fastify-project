@@ -37,6 +37,7 @@ fastify.register(require("./plugins/jwt.js"))
 
 //register routes
 fastify.register(require("./routes/auth.js"), {prefix: "/api/v1/auth"})
+fastify.register(require("./routes/thumbnail.js"), {prefix: "/api/v1/thumbnail"})
 
 // Declare a route
 fastify.get('/', function (request, reply) {

@@ -116,3 +116,24 @@ exports.deleteThumbnail = async (request, reply) => {
         reply.send(err)
     }
 }
+
+exports.deleteAllThumbnails = async (request, reply) => {
+    try {
+        const thumbnails = await Thumbnail.find({user: request.user.id})
+
+        await Thumbnail.deleteMany({user: request.user.id})
+
+        for(const thumbnail of thumbnails) {
+            const filepath = path.join(__dirname, "..", "uploads", "thumbnails", path.basename(thumbnail.image))
+            fs.unlink(filepath, (err) => {
+                if(err) {
+                    fastify.log.error(err)
+                }
+            })
+        }
+
+        reply.send({message: "All thumbnails deleted"})
+    } catch (err) {
+        reply.send(err)
+    }
+}
