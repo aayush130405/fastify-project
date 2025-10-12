@@ -4,6 +4,7 @@ const fs = require("fs")
 const {pipeline} = require("stream")
 
 const util = require("util")
+const { default: fastify } = require("fastify")
 const pipelineAsync = util.promisify(pipeline)
 
 exports.createThumbnail = async (request, reply) => {
@@ -83,6 +84,34 @@ exports.updateThumbnail = async (request, reply) => {
         }
 
         reply.send(thumbnail)
+    } catch (err) {
+        reply.send(err)
+    }
+}
+
+exports.deleteThumbnail = async (request, reply) => {
+    try {
+        const thumbnail = await Thumbnail.findByIdAndDelete(
+            {id: request.params.id, user: request.user.id}
+        )
+
+        if(!thumbnail) {
+            return reply.notFound("Thumbnail not found")
+        }
+
+        const filepath = path.join(
+            __dirname,
+            "..",
+            "uploads",
+            "thumbnails",
+            path.basename(thumbnail.image)
+        )
+
+        fs.unlink(filepath, (err) => {
+            if(err) fastify.log.error(err)
+        })
+
+        reply.send({message: "Thumbnail deleted"})
     } catch (err) {
         reply.send(err)
     }
