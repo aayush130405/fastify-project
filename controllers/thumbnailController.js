@@ -67,3 +67,23 @@ exports.getThumbnailById = async (request, reply) => {
         reply.send(err)
     }
 }
+
+exports.updateThumbnail = async (request, reply) => {
+    try {
+        const updatedData = request.body
+
+        const thumbnail = await Thumbnail.findByIdAndUpdate(
+            {_id: request.params.id, user: request.user.id},
+            updatedData,
+            {new: true}
+        )
+
+        if(!thumbnail) {
+            return reply.send("Failed to update thumbnail")
+        }
+
+        reply.send(thumbnail)
+    } catch (err) {
+        reply.send(err)
+    }
+}
