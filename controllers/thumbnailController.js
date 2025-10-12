@@ -40,3 +40,13 @@ exports.createThumbnail = async (request, reply) => {
         reply.send(err)
     }
 }
+
+exports.getThumbnail = async (request, reply) => {
+    try {
+        const thumbnails = await Thumbnail.find({user: request.user.id})
+
+        reply.send(thumbnails)
+    } catch (err) {
+        reply.send(err)
+    }
+}
