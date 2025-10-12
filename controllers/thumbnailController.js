@@ -50,3 +50,20 @@ exports.getThumbnail = async (request, reply) => {
         reply.send(err)
     }
 }
+
+exports.getThumbnailById = async (request, reply) => {
+    try {
+        const thumbnail = await Thumbnail.findOne({
+            _id: request.params.id,
+            user: request.user.id
+        })
+
+        if(!thumbnail) {
+            return reply.notFound("Thumbnail not found")
+        }
+
+        reply.send(thumbnail)
+    } catch (err) {
+        reply.send(err)
+    }
+}
