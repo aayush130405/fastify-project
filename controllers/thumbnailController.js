@@ -18,10 +18,24 @@ exports.createThumbnail = async (request, reply) => {
                 const saveTo = path.join(
                     __dirname, "..", "uploads", "thumbnails", filename//
                 ) 
+
+                await pipelineAsync(part.file, fs.createWriteStream(saveTo))
             } else {
                 fields[part.filename] = part.value
             } 
         }
+
+        const thumbnail = new Thumbnail({
+            user: request.user.id,
+            videoName: fields.videoName,
+            version: fields.version,
+            image: `/uploads/thumbnails/${filename}`,
+            paid: fields.paid === "true"
+        })
+
+        await thumbnail.save()
+
+        reply.code(201).send(thumbnail)
     } catch (err) {
         reply.send(err)
     }
